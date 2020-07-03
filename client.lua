@@ -1,5 +1,5 @@
 local voice = false
-local time = 5000
+local check = false
 
 AddEventHandler("SaltyChat_TalkStateChanged", function(isTalking)
     if isTalking then
@@ -9,12 +9,24 @@ end)
 
 Citizen.CreateThread(function()
     while true do
-        Citizen.Wait(time)
+        Citizen.Wait(1)
 
-        if not voice then
-            OpenAlertscreen()
-            break
-        end
+		if IsControlJustPressed(0, 0x8FD015D8) then
+			check = true
+		end
+    end
+end)
+
+Citizen.CreateThread(function()
+    while true do
+        Citizen.Wait(1)
+		
+		if check then 
+			if not voice then
+				OpenAlertscreen()
+				break
+			end
+		end
     end
 end)
 
@@ -22,10 +34,12 @@ Citizen.CreateThread(function()
     while true do
         Citizen.Wait(1)
 
-        if voice then
-            CloseAlertscreen()
-            break
-        end
+		if check then 
+			if voice then
+				CloseAlertscreen()
+				break
+			end
+		end
     end
 end)
 
